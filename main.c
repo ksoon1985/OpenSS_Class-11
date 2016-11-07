@@ -1,3 +1,6 @@
 #include<stdio.h>
 int main(){
-printf("hellow");}
+printf("hellow");
+printf("ayayayayayayayaya");
+
+}
