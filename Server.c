@@ -1,0 +1,10 @@
+#include<winsork2.h>
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#define port 6666
+
+int main(int argc, char **argv)
+{
+  WSADATA wsaData;
+}
