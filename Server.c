@@ -9,4 +9,6 @@
 int main(int argc, char **argv)
 {
   WSADATA wsaData;
+  SOCKET listen_sock, connect_sock;
+  SOCKADDR_IN listen_addr, connect_addr;
 }
