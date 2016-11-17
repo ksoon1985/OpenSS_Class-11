@@ -5,7 +5,8 @@
 #pragma comment(lib, "ws2_32.lib") 
 
 #define PORT 6600
-#define BUFF_SIZE 20		
+#define BUFF_SIZE 20	//메시지의 크기
+	
 
 
 void start(void);	//프로그램을 시작
@@ -17,6 +18,7 @@ void draw(void);				//오목판을 그리는 함수
 int input(int );				//사용자의 입력을 받는 함수
 int check(int ,int , int );			//승패 체크
 int menu(void);					//메뉴 출력
+void explain(void);				//오목게임 사용법 출력
 
 // 사용자 이름 전적 저장
 struct player{						
@@ -47,4 +49,30 @@ int main(void){
 	WSACleanup();
 
 	return 0;
+}
+
+//게임방법설명
+void explain(void){
+	int state;
+	char str[30];
+	
+	FILE * file = fopen("gamerule.txt","rt");
+	if(file==NULL){
+		printf("file open error!\n");
+		return;
+	}
+	
+	while(1){
+		fgets(str,sizeof(str),file);
+		if(feof(file)!=0)
+			break;
+		fputs(str,stdout);
+	}
+	
+	state=fclose(file);
+	system("pause");
+	if(state!=0){
+		printf("file close error!\n");
+		return;
+	}
 }
