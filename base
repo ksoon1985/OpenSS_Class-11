@@ -13,12 +13,13 @@ void start(void);	//프로그램을 시작
 void server(void);	//서버 동작
 void client(void);      //클라이언 동작   
 void init_game(void);				//게임을 초기화
-int start_game(void);				//오목게임을 시
+int start_game(void);				//오목게임을 시작
 void draw(void);				//오목판을 그리는 함수
 int input(int );				//사용자의 입력을 받는 함수
 int check(int ,int , int );			//승패 체크
 int menu(void);					//메뉴 출력
 void explain(void);				//오목게임 사용법 출력
+void view_win(void);				//전적을 표시하는 함수
 
 // 사용자 이름 전적 저장
 struct player{						
@@ -45,7 +46,7 @@ int main(void){
 			break;
 	}
 	
-	closesocket(client_sock);	//소켓을 닫
+	closesocket(client_sock);	//소켓을 닫음
 	WSACleanup();
 
 	return 0;
@@ -76,3 +77,228 @@ void explain(void){
 		return;
 	}
 }
+
+ //전적출력
+void view_win(){
+	system("cls");
+	printf("  ┌────────────────────────┐\n");
+	printf("  │        네트워크를 이용한 오목게임  V0.2        │\n");
+	printf("  │                  - 전   적 -                   │\n");
+	printf("  │                                                │\n");
+	printf("  ├────────┬───────┬───────┤\n");
+	printf("  │  사용자 이름   │       승     │      패      │\n");
+	printf("  ├────────┼───────┼───────┤\n");
+	printf("  │  %10s    │     %3d 승   │    %3d 패    │\n",p[0].name,p[0].win,p[0].lose);
+	printf("  ├────────┼───────┼───────┤\n");
+	printf("  │  %10s    │     %3d 승   │    %3d 패    │\n",p[1].name,p[1].win,p[1].lose);
+	printf("  └────────┴───────┴───────┘\n\n");
+	system("pause");
+	return;
+}
+
+ //메뉴출력 입력에따라 수행
+int menu(){
+	int sel;
+	
+	system("cls");
+	printf("  ┌────────────────────────┐\n");
+	printf("  │        네트워크를 이용한 오목게임  V0.2        │\n");
+	printf("  │                 - Main Menu -                  │\n");
+	printf("  │                                                │\n");
+	printf("  │   1. 새로운 게임 시작                          │\n");
+	printf("  │   2. 이어서 하기                               │\n");
+	printf("  │   3. 전적 보기                                 │\n");
+	printf("  │   4. 도 움 말                                  │\n");
+	printf("  │   0. 게임 종료                                 │\n");
+	printf("  └────────────────────────┘\n\n");
+	printf("   입력 >> ");
+	scanf("%d",&sel);
+	switch(sel){
+	case 1:				//입력이 1이면 새로운 게임 시작
+		send(client_sock,"start",BUFF_SIZE,0);
+		while(1){
+			printf("   상대방의 시작을 기다립니다.\n");
+			recv(client_sock,from_msg,BUFF_SIZE,0);
+			if(from_msg[0] == 's'&&from_msg[1] == 't')
+				break;
+			if(from_msg[0] == 'q'){
+				printf("   상대방이 프로그램을 종료하였습니다.\n");
+				system("pause");
+				return 0;
+			}
+		}
+		
+		printf("   게임을 시작합니다..\n");
+		init_game();
+		if(start_game() == 1)
+			return 1;
+		break;
+	case 2:				//입력이 2이면 기존의 게임을 시작
+		if(start_game() == 1)
+			return 1;
+		break;
+	case 3:				//입력이 3이면 전적을 출력
+		view_win();
+		break;
+	case 4:				//입력이 3이면 도움말 출력
+		explain();
+		break;
+	case 0:				//입력이 0이면 종료
+		to_msg[0] = 'q';
+		send(client_sock,to_msg,BUFF_SIZE,0);
+		printf("   프로그램을 종료합니다.\n\n\n");
+		return 1;
+	default :			//그외에는 잘못된 입력을 출력
+		printf("   잘못된 입력입니다.\n");
+		fflush(stdin);
+		system("pause");
+	}
+
+	return 0;
+}
+
+//게임수행
+int start_game(){
+	while(1){
+		system("cls");
+		draw();		//화면에 바둑판 출력
+		fflush(stdin);
+		memset(from_msg, 0, BUFF_SIZE);		//메모리초기화
+		memset(to_msg, 0, BUFF_SIZE);
+		memset(in_msg, 0, BUFF_SIZE);
+
+		switch(input(turn)){
+		case 1:		//리턴이 1이면 프로그램 종료
+			printf("   프로그램을 종료합니다.\n");
+			return 1;
+		case 2:		//리턴이 2이면 해당턴의 사용자의 승리
+			system("cls");
+			draw();
+			printf("\n\n %s 의 승리입니다.\n",p[turn].name);
+			p[turn].win += 1;
+			(turn == 0)? (p[turn+1].lose += 1) : (p[turn-1].lose += 1);
+			system("pause");
+			return 0;
+		case 9:		//리턴이 9이면 메인메뉴로 가기위해 함수를 종료
+			return 0;	
+		case -1:	//리턴이 -1이면 루프탈출 
+			break;
+		default:	//그외에는 턴을 바꿈
+			(turn==0)? (turn = 1) : (turn = 0);
+		}
+	}
+	return 0;
+}
+
+//입력받아 수를 둠
+int input(int turn){
+	int input_com, ret, x = -1, y = -1;
+	char sel;
+	
+	printf("\n\n %s 차례입니다.\n",p[turn].name);
+	if(turn == 0){
+		//자신의 턴일때
+		printf(" 1.두기  2.패스  3.전적 보기 4.메시지보내기 9.메인메뉴로  0.종료  입력>> ");
+		scanf("%d",&input_com);
+		fflush(stdin);
+		
+		switch(input_com){
+		case 1:		//좌표를 입력받아서 해당위치에 수를둠
+			printf(" 좌표를 입력하세요 x y >> ");
+			scanf("%d %d",&y, &x);
+			fflush(stdin);
+			if(x<0 || x>9 || y<0 || y>9){
+				return -1;
+			}
+			if(board[x][y] == 0){
+				board[x][y] = turn + 1;
+				//좌표를 전송
+				to_msg[0] = 'c';
+				to_msg[1] = x +48;
+				to_msg[2] = y +48;
+				send(client_sock,to_msg,BUFF_SIZE,0);
+
+				ret = check(x,y,turn);
+				return ret;
+			}
+			else{
+				printf(" 이미 둔 자리입니다.");
+				return -1;
+			}
+		case 2:		//패스일 경우 P라는 메시지를 보냄
+			printf(" %s 의 패스!!\n",p[turn].name);
+			to_msg[0] = 'p';
+			send(client_sock,to_msg,BUFF_SIZE,0);
+			system("pause");
+			return 0;
+		case 3:		//전적을 표시해줌
+			view_win();
+			return -1;
+		case 4:		//메시지를 전송함
+			printf(" 메시지를 입력하세요 : ");
+			scanf("%s",in_msg);
+			fflush(stdin);
+			to_msg[0] = 'm';	//m플래그를 붙여서 보냄
+			strcat(to_msg,in_msg);
+			send(client_sock,to_msg,BUFF_SIZE,0);
+			system("pause");
+			return -1;
+		case 9:		//메인메뉴로 이동
+			printf(" 메인메뉴로 이동합니다.\n");
+			system("pause");
+			return 9;
+		case 0:		//프로그램 종료
+			printf(" 정말 종료하시겠습니까? ");
+			scanf("%c",&sel);
+			fflush(stdin);
+			if(sel == 'y' || sel == 'Y'){
+				to_msg[0] = 'q';		//q플래그를 전송
+				send(client_sock,to_msg,BUFF_SIZE,0);
+				return 1;
+			}
+			return -1;
+		default :		//잘못된 입력일경우 다시 입력받음
+			printf(" 잘못된 입력 입니다.\n");
+			printf(" 다시입력하세요.\n");
+			fflush(stdin);
+			system("pause");
+			return -1;
+		}
+
+	}
+	else{
+		//상대방의 턴일때
+		printf(" %s의 입력을 기다립니다.\n",p[turn].name);
+		recv(client_sock,from_msg,BUFF_SIZE,0);
+
+		switch(from_msg[0]){
+		case 'c':		//플래그가 c이면 수를 둠
+			x = ((int)from_msg[1]) - 48;
+			y = ((int)from_msg[2]) - 48;
+			board[x][y] = turn + 1;		
+			ret = check(x,y,turn);
+			return ret;
+		case 'p':		//플래그가 p이면 패스
+			printf(" %s 의 패스!!\n",p[turn].name);
+			system("pause");
+			return 0;
+		case 'm':		//플래그가 m이면 메시지를 표시
+			from_msg[0] = ' ';
+			printf(" %s 의 메시지 : %s\n",p[turn].name,from_msg);
+			system("pause");
+			return -1;
+		case 'q':		//플래그가 q이면 상대방이 게임을 종료
+			printf(" 상대방이 게임을 종료하였습니다.\n");
+			system("pause");
+			return 9;
+		default :		
+			printf(" 상대방이 게임을 종료하였습니다.\n");
+			system("pause");
+			return 9;
+		}
+
+	}
+	
+	return 0;
+}
+
