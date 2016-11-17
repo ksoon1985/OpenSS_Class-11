@@ -15,7 +15,8 @@ void init_game(void);				//게임을 초기화
 int start_game(void);				//오목게임을 시
 void draw(void);				//오목판을 그리는 함수
 int input(int );				//사용자의 입력을 받는 함수
-int check(int ,int , int );			//승패를 체크
+int check(int ,int , int );			//승패 체크
+int menu(void);					//메뉴 출력
 
 // 사용자 이름 전적 저장
 struct player{						
@@ -33,3 +34,17 @@ char from_msg[BUFF_SIZE], to_msg[BUFF_SIZE], in_msg[BUFF_SIZE];	  //통신에 �
 WSADATA wsdata;
 SOCKET server_sock,client_sock;
 SOCKADDR_IN server_addr;
+
+int main(void){
+	start();
+	init_game();		//게임을 초기화
+	while(1){
+		if(menu()==1)	//메뉴의 리턴값이 1이 나올때까지 메뉴를 계속 수행
+			break;
+	}
+	
+	closesocket(client_sock);	//소켓을 닫
+	WSACleanup();
+
+	return 0;
+}
