@@ -8,12 +8,28 @@
 #define BUFF_SIZE 20		
 
 
-void start(void);					//프로그램을 시작
-void server(void);					//서버 동작
-void client(void);        //클라이언 동작   
+void start(void);	//프로그램을 시작
+void server(void);	//서버 동작
+void client(void);      //클라이언 동작   
+void init_game(void);				//게임을 초기화
+int start_game(void);				//오목게임을 시
+void draw(void);				//오목판을 그리는 함수
+int input(int );				//사용자의 입력을 받는 함수
+int check(int ,int , int );			//승패를 체크
 
 // 사용자 이름 전적 저장
 struct player{						
 	char name[20];
 	int win , lose;
 };
+
+int board[10][10];					//오목판을 표현하는 배열
+struct player p[2] = {0};			        //사용자를 나타내는 구조체 선언
+int turn = 0;						//턴을 표시하는 변수
+int is_server = 0;					//상태를 표시하는 변수
+char from_msg[BUFF_SIZE], to_msg[BUFF_SIZE], in_msg[BUFF_SIZE];	  //통신에 필요한 메시지 변수
+
+//통신에 사용될 변수들
+WSADATA wsdata;
+SOCKET server_sock,client_sock;
+SOCKADDR_IN server_addr;
