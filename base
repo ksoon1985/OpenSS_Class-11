@@ -86,7 +86,7 @@ void explain(void){
 void view_win(){
 	system("cls");
 	printf("  ┌────────────────────────┐\n");
-	printf("  │        소켓통신을 이용한 오목게임          │\n");
+	printf("  │        소켓통신을 이용한 오목게임              │\n");
 	printf("  │                  - 전   적 -                   │\n");
 	printf("  │                                                │\n");
 	printf("  ├────────┬───────┬───────┤\n");
