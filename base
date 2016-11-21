@@ -143,7 +143,7 @@ int menu(){
 	case 3:				//입력이 3이면 전적을 출력
 		view_win();
 		break;
-	case 4:				//입력이 3이면 도움말 출력
+	case 4:				//입력이 4이면 도움말 출력
 		explain();
 		break;
 	case 0:				//입력이 0이면 종료
