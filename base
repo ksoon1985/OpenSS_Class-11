@@ -86,7 +86,7 @@ void explain(void){
 void view_win(){
 	system("cls");
 	printf("  ┌────────────────────────┐\n");
-	printf("  │        네트워크를 이용한 오목게임  V0.2        │\n");
+	printf("  │        소켓통신을 이용한 오목게임          │\n");
 	printf("  │                  - 전   적 -                   │\n");
 	printf("  │                                                │\n");
 	printf("  ├────────┬───────┬───────┤\n");
@@ -106,7 +106,6 @@ int menu(){
 	
 	system("cls");
 	printf("  ┌────────────────────────┐\n");
-	printf("  │        네트워크를 이용한 오목게임  V0.2        │\n");
 	printf("  │                 - Main Menu -                  │\n");
 	printf("  │                                                │\n");
 	printf("  │   1. 새로운 게임 시작                          │\n");
@@ -428,7 +427,7 @@ void start(void){
 	int input;
 	system("cls");
 	printf("  ┌────────────────────────┐\n");
-	printf("  │        네트워크를 이용한 오목게임  V0.5        │\n");
+	printf("  │         소켓통신을 이용한 오목게임         │\n");
 	printf("  │       - 오픈소스 11분반 프로젝트 -             │\n");
 	printf("  │                                                │\n");
 	printf("  │                                                │\n");
