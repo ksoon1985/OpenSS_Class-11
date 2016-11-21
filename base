@@ -427,7 +427,7 @@ void start(void){
 	int input;
 	system("cls");
 	printf("  ┌────────────────────────┐\n");
-	printf("  │         소켓통신을 이용한 오목게임         │\n");
+	printf("  │         소켓통신을 이용한 오목게임             │\n");
 	printf("  │       - 오픈소스 11분반 프로젝트 -             │\n");
 	printf("  │                                                │\n");
 	printf("  │                                                │\n");
