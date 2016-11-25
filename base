@@ -461,7 +461,7 @@ void tempdraw(int x, int y) {
          
          if (ax == i) {
             if (ay == j) {
-               printf("☆");
+               printf("●");
 
             }
             else
