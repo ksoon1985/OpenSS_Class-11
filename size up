@@ -442,7 +442,7 @@ void draw() {
 void tempdraw(int x, int y) {
    int i=0, j=0;
    int ax = x; int ay = y;
-   printf("  ┌────────────────────────┐\n");
+   printf("  ┌─────────────────────────────┐\n");
    printf("  │                ");
    for (i = 0; i<15; i++) {
       printf("%2d", i);
@@ -490,8 +490,8 @@ void tempdraw(int x, int y) {
       printf("            │");
       printf("\n");
    }
-   printf("  │                                                │\n");
-   printf("  └────────────────────────┘\n");
+   printf("  │                                                          │\n");
+   printf("  └─────────────────────────────┘\n");
    printf("    ● : %s       ○ : %s", p[0].name, p[1].name);
    return;
 }
