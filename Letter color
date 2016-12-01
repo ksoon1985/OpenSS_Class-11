@@ -1,0 +1,15 @@
+//글자 색깔바꿀수있는거 
+
+#include<stdio.h>
+#include<windows.h>
+
+int main(void)
+{
+	int i;
+
+	for(i=0; i<=15;i++)
+	{
+    SetConsoleTextAttribute( GetStdHandle( STD_OUTPUT_HANDLE ), i );
+    printf( "글자색 변경예제\n" );
+	}
+}
