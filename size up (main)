@@ -202,7 +202,7 @@ int input(int turn) {
    printf("\n\n %s 차례입니다.\n", p[turn].name);
    if (turn == 0) {
       //자신의 턴일때
-      printf(" 1.두기  2.패스  3.전적 보기 4.메시지보내기 9.메인메뉴로  0.종료  입력>> ");
+      printf(" 1.두기  2.패스  3.전적 보기 4.메시지보내기 9.메인메뉴  0.종료  입력>> ");
       scanf("%d", &input_com);
       fflush(stdin);
 
