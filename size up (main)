@@ -23,7 +23,6 @@ void draw(void);            //오목판을 그리는 함수
 int input(int);            //사용자의 입력을 받는 함수
 int check(int, int, int);         //승패 체크
 int menu(void);               //메뉴 출력
-void explain(void);            //오목게임 사용법 출력
 void view_win(void);            //전적을 표시하는 함수
 void tempdraw(int x, int y);
 
@@ -61,32 +60,6 @@ int main(void) {
    WSACleanup();
 
    return 0;
-}
-
-//게임방법설명
-void explain(void) {
-   int state;
-   char str[30];
-
-   FILE * file = fopen("gamerule.txt", "rt");
-   if (file == NULL) {
-      printf("file open error!\n");
-      return;
-   }
-
-   while (1) {
-      fgets(str, sizeof(str), file);
-      if (feof(file) != 0)
-         break;
-      fputs(str, stdout);
-   }
-
-   state = fclose(file);
-   system("pause");
-   if (state != 0) {
-      printf("file close error!\n");
-      return;
-   }
 }
 
 //전적출력
@@ -525,7 +498,7 @@ void start(void) {
    CLS;
    printf("  ┌────────────────────────┐\n");
    printf("  │         소켓통신을 이용한 오목게임             │\n");
-   printf("  │       - 오픈소스 11분반 프로젝트 -             │\n");
+   printf("  │        - 오픈소스 11분반 프로젝트 -             │\n");
    printf("  │                                                │\n");
    printf("  │                                                │\n");
    printf("  └────────────────────────┘\n\n");
