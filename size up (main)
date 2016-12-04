@@ -25,7 +25,12 @@ int check(int, int, int);         //승패 체크
 int menu(void);               //메뉴 출력
 void view_win(void);            //전적을 표시하는 함수
 void tempdraw(int x, int y);
+void setcolor(int color);
 
+void setcolor(int color)//색깔함수
+{
+   SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
 enum FontColor {
 	BLACK, BLUE, GREEN, JADE, RED, PURPLE, YELLOW, WHITE, GRAY,
 	LIGHT_BLUE, LIGHT_GREEN, LIGHT_JADE, LIGHT_RED, LIGHT_PURPLE, LIGHT_YELLOW, LIGHT_WHITE
@@ -83,9 +88,6 @@ void view_win() {
 //메뉴출력 입력에따라 수행
 int menu() {
    int sel;
-	 int color = LIGHT_YELLOW;
-	 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-
    CLS;
    printf("  ┌────────────────────────┐\n");
    printf("  │                 - Main Menu -                  │\n");
@@ -124,6 +126,7 @@ int menu() {
    case 3:            //입력이 3이면 전적을 출력
       view_win();
       break;
+
    case 0:            //입력이 0이면 종료
       to_msg[0] = 'q';
       send(client_sock, to_msg, BUFF_SIZE, 0);
@@ -493,6 +496,9 @@ void init_game(void) {
 void start(void) {
    int input;
    CLS;
+
+   
+  
    printf("  ┌────────────────────────┐\n");
    printf("  │         소켓통신을 이용한 오목게임             │\n");
    printf("  │        - 오픈소스 11분반 프로젝트 -            │\n");
