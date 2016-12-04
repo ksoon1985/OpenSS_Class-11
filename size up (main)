@@ -124,9 +124,6 @@ int menu() {
    case 3:            //입력이 3이면 전적을 출력
       view_win();
       break;
-   case 4:            //입력이 4이면 도움말 출력
-      explain();
-      break;
    case 0:            //입력이 0이면 종료
       to_msg[0] = 'q';
       send(client_sock, to_msg, BUFF_SIZE, 0);
@@ -498,7 +495,7 @@ void start(void) {
    CLS;
    printf("  ┌────────────────────────┐\n");
    printf("  │         소켓통신을 이용한 오목게임             │\n");
-   printf("  │        - 오픈소스 11분반 프로젝트 -             │\n");
+   printf("  │        - 오픈소스 11분반 프로젝트 -            │\n");
    printf("  │                                                │\n");
    printf("  │                                                │\n");
    printf("  └────────────────────────┘\n\n");
