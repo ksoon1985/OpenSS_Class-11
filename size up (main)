@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <winsock2.h>
 #include <conio.h>
+#include <windows.h>
 
 #pragma warning(disable: 4996)
 
@@ -25,6 +26,12 @@ int menu(void);               //메뉴 출력
 void explain(void);            //오목게임 사용법 출력
 void view_win(void);            //전적을 표시하는 함수
 void tempdraw(int x, int y);
+
+enum FontColor {
+	BLACK, BLUE, GREEN, JADE, RED, PURPLE, YELLOW, WHITE, GRAY,
+	LIGHT_BLUE, LIGHT_GREEN, LIGHT_JADE, LIGHT_RED, LIGHT_PURPLE, LIGHT_YELLOW, LIGHT_WHITE
+}; // 색깔 상수 정의
+
                         // 사용자 이름 전적 저장
 struct player {
    char name[20];
@@ -103,6 +110,8 @@ void view_win() {
 //메뉴출력 입력에따라 수행
 int menu() {
    int sel;
+	 int color = LIGHT_YELLOW;
+	 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 
    CLS;
    printf("  ┌────────────────────────┐\n");
