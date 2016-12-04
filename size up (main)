@@ -70,6 +70,7 @@ int main(void) {
 //전적출력
 void view_win() {
    CLS;
+   setcolor(6);
    printf("  ┌────────────────────────┐\n");
    printf("  │        소켓통신을 이용한 오목게임              │\n");
    printf("  │                  - 전   적 -                   │\n");
